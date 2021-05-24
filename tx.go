@@ -16,8 +16,8 @@ type (
 		logger glog.Logger
 	}
 
-	txFun  func(tx Session) (err error)
-	txpFun func(tx Session, params ...interface{}) (err error)
+	txFun  func(tx *Session) (err error)
+	txpFun func(tx *Session, params ...interface{}) (err error)
 )
 
 // NewTx 事务控制
@@ -29,28 +29,28 @@ func NewTx(engine *xorm.Engine, logger glog.Logger) *Tx {
 }
 
 func (t *Tx) Do(fun txFun, fields ...gox.Field) (err error) {
-	return t.do(func(tx Session) error {
+	return t.do(func(tx *Session) error {
 		return fun(tx)
 	}, fields...)
 }
 
 func (t *Tx) Dop(fun txpFun, params []interface{}, fields ...gox.Field) (err error) {
-	return t.do(func(tx Session) error {
+	return t.do(func(tx *Session) error {
 		return fun(tx, params...)
 	}, fields...)
 }
 
-func (t *Tx) do(fun func(tx Session) error, fields ...gox.Field) (err error) {
-	tx := t.engine.NewSession()
-	if err = t.begin(tx, fields...); nil != err {
+func (t *Tx) do(fun func(tx *Session) error, fields ...gox.Field) (err error) {
+	session := t.engine.NewSession()
+	if err = t.begin(session, fields...); nil != err {
 		return
 	}
-	defer t.close(tx, fields...)
+	defer t.close(session, fields...)
 
-	if err = fun(Session{Session: tx}); nil != err {
-		t.rollback(tx, fields...)
+	if err = fun(&Session{Session: session}); nil != err {
+		t.rollback(session, fields...)
 	} else {
-		t.commit(tx, fields...)
+		t.commit(session, fields...)
 	}
 
 	return
