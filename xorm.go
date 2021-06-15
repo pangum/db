@@ -1,4 +1,4 @@
-package sql
+package database
 
 import (
 	`strings`
@@ -15,30 +15,30 @@ func newXormEngine(config *pangu.Config) (engine *xorm.Engine, err error) {
 	if err = config.Struct(panguConfig); nil != err {
 		return
 	}
-	sql := panguConfig.Sql
+	database := panguConfig.Database
 
 	var dsn string
-	if dsn, err = sql.dsn(); nil != err {
+	if dsn, err = database.dsn(); nil != err {
 		return
 	}
 
-	if engine, err = xorm.NewEngine(sql.Type, dsn); nil != err {
+	if engine, err = xorm.NewEngine(database.Type, dsn); nil != err {
 		return
 	}
 
 	// 调试模式下打开各种可调试的选项
-	if sql.Show {
+	if database.Show {
 		engine.ShowSQL(true)
 		engine.Logger().SetLevel(log.LOG_DEBUG)
 	}
 
 	// 配置数据库连接池
-	engine.SetMaxOpenConns(sql.Connection.MaxOpen)
-	engine.SetMaxIdleConns(sql.Connection.MaxIdle)
-	engine.SetConnMaxLifetime(sql.Connection.MaxLifetime)
+	engine.SetMaxOpenConns(database.Connection.MaxOpen)
+	engine.SetMaxIdleConns(database.Connection.MaxIdle)
+	engine.SetConnMaxLifetime(database.Connection.MaxLifetime)
 
 	// 测试数据库连接成功
-	if sql.Ping {
+	if database.Ping {
 		if err = engine.Ping(); nil != err {
 			return
 		}
@@ -46,11 +46,11 @@ func newXormEngine(config *pangu.Config) (engine *xorm.Engine, err error) {
 
 	// 设置名称转换（列名及表名）
 	core.NewCacheMapper(core.GonicMapper{})
-	if "" != strings.TrimSpace(sql.Prefix) {
-		core.NewPrefixMapper(core.GonicMapper{}, sql.Prefix)
+	if "" != strings.TrimSpace(database.Prefix) {
+		core.NewPrefixMapper(core.GonicMapper{}, database.Prefix)
 	}
-	if "" != strings.TrimSpace(sql.Suffix) {
-		core.NewSuffixMapper(core.GonicMapper{}, sql.Suffix)
+	if "" != strings.TrimSpace(database.Suffix) {
+		core.NewSuffixMapper(core.GonicMapper{}, database.Suffix)
 	}
 
 	return

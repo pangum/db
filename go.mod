@@ -1,4 +1,4 @@
-module github.com/storezhang/pangu-sql
+module github.com/storezhang/pangu-database
 
 go 1.16
 
