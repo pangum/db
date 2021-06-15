@@ -1,18 +1,11 @@
-package database
+package sql
 
 import (
 	`github.com/storezhang/pangu`
 )
 
 func init() {
-	app := pangu.New()
-
-	if err := app.Provides(
-		NewXormEngine,
-		NewTx,
-		NewRedis,
-		NewElasticsearch,
-	); nil != err {
+	if err := pangu.New().Provides(newXormEngine, newTx); nil != err {
 		panic(err)
 	}
 }

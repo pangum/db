@@ -1,4 +1,4 @@
-package database
+package sql
 
 import (
 	`runtime`
@@ -20,8 +20,8 @@ type (
 	txpFun func(tx *Session, params ...interface{}) (err error)
 )
 
-// NewTx 事务控制
-func NewTx(engine *xorm.Engine, logger glog.Logger) *Tx {
+// 事务控制
+func newTx(engine *xorm.Engine, logger glog.Logger) *Tx {
 	return &Tx{
 		engine: engine,
 		logger: logger,
