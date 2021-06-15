@@ -6,8 +6,7 @@ import (
 	`strings`
 )
 
-// Config 数据库配置
-type Config struct {
+type config struct {
 	// 数据库类型
 	Type string `default:"sqlite3" json:"type" yaml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
 
@@ -40,7 +39,7 @@ type Config struct {
 	Show bool `default:"false" json:"show" yaml:"show"`
 }
 
-func (c *Config) dsn() (dsn string, err error) {
+func (c *config) dsn() (dsn string, err error) {
 	switch strings.ToLower(c.Type) {
 	case "mysql":
 		dsn = fmt.Sprintf("%s:%s@%s(%s)", c.Username, c.Password, c.Protocol, c.Addr)
