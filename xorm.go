@@ -11,8 +11,8 @@ import (
 
 // 创建Xorm操作引擎
 func newXormEngine(config *pangu.Config) (engine *xorm.Engine, err error) {
-	var panguConfig panguConfig
-	if err = config.Struct(panguConfig); nil != err {
+	panguConfig := new(panguConfig)
+	if err = config.Load(panguConfig); nil != err {
 		return
 	}
 	database := panguConfig.Database

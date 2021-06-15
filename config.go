@@ -12,7 +12,7 @@ type Config struct {
 	Type string `default:"sqlite3" json:"type" yaml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
 
 	// 地址，填写服务器地址
-	Addr string `default:"127.0.0.1:3306" json:"addr" validate:"required,uri"`
+	Addr string `default:"127.0.0.1:3306" json:"addr" validate:"required,hostname_port"`
 	// 授权，用户名
 	Username string `json:"username,omitempty" yaml:"username"`
 	// 授权，密码
