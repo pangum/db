@@ -10,7 +10,7 @@ import (
 )
 
 // 创建Xorm操作引擎
-func newXormEngine(config *pangu.Config) (engine *xorm.Engine, err error) {
+func newXormEngine(config *pangu.Config) (engine *Engine, err error) {
 	panguConfig := new(panguConfig)
 	if err = config.Load(panguConfig); nil != err {
 		return
@@ -22,7 +22,8 @@ func newXormEngine(config *pangu.Config) (engine *xorm.Engine, err error) {
 		return
 	}
 
-	if engine, err = xorm.NewEngine(database.Type, dsn); nil != err {
+	engine = new(Engine)
+	if engine.Engine, err = xorm.NewEngine(database.Type, dsn); nil != err {
 		return
 	}
 
