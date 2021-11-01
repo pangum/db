@@ -4,8 +4,7 @@ import (
 	`time`
 )
 
-// ConnectionConfig 连接池配置
-type ConnectionConfig struct {
+type connection struct {
 	// 最大打开连接数
 	MaxOpen int `default:"150" yaml:"maxOpen" json:"maxOpen"`
 	// 最大休眠连接数

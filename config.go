@@ -20,7 +20,7 @@ type config struct {
 	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" validate:"required,oneof=tcp udp"`
 
 	// 连接池配置
-	Connection ConnectionConfig `json:"connection" yaml:"connection"`
+	Connection connection `json:"connection" yaml:"connection"`
 
 	// 表名的前缀
 	Suffix string `json:"suffix,omitempty" yaml:"suffix"`
