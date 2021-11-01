@@ -3,7 +3,7 @@ package database
 import (
 	`strings`
 
-	`github.com/storezhang/pangu`
+	`github.com/pangum/pangu`
 	`xorm.io/core`
 	`xorm.io/xorm`
 	`xorm.io/xorm/log`
@@ -11,11 +11,11 @@ import (
 
 // 创建Xorm操作引擎
 func newXormEngine(config *pangu.Config) (engine *Engine, err error) {
-	panguConfig := new(panguConfig)
-	if err = config.Load(panguConfig); nil != err {
+	_panguConfig := new(panguConfig)
+	if err = config.Load(_panguConfig); nil != err {
 		return
 	}
-	database := panguConfig.Database
+	database := _panguConfig.Database
 
 	var dsn string
 	if dsn, err = database.dsn(); nil != err {
@@ -47,10 +47,10 @@ func newXormEngine(config *pangu.Config) (engine *Engine, err error) {
 
 	// 设置名称转换（列名及表名）
 	core.NewCacheMapper(core.GonicMapper{})
-	if "" != strings.TrimSpace(database.Prefix) {
+	if `` != strings.TrimSpace(database.Prefix) {
 		core.NewPrefixMapper(core.GonicMapper{}, database.Prefix)
 	}
-	if "" != strings.TrimSpace(database.Suffix) {
+	if `` != strings.TrimSpace(database.Suffix) {
 		core.NewSuffixMapper(core.GonicMapper{}, database.Suffix)
 	}
 
