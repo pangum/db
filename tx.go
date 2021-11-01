@@ -12,7 +12,7 @@ import (
 type (
 	// Tx 事务控制
 	Tx struct {
-		engine *xorm.Engine
+		engine *Engine
 		logger *logging.Logger
 	}
 
@@ -21,7 +21,7 @@ type (
 )
 
 // 事务控制
-func newTx(engine *xorm.Engine, logger *logging.Logger) *Tx {
+func newTx(engine *Engine, logger *logging.Logger) *Tx {
 	return &Tx{
 		engine: engine,
 		logger: logger,
