@@ -1,29 +1,27 @@
 package database
 
 import (
+	`fmt`
 	`strings`
 
+	`github.com/elliotchance/sshtunnel`
 	`github.com/pangum/pangu`
+	`golang.org/x/crypto/ssh`
 	`xorm.io/core`
 	`xorm.io/xorm`
 	`xorm.io/xorm/log`
 )
 
 // 创建Xorm操作引擎
-func newXormEngine(config *pangu.Config) (engine *Engine, err error) {
+func newEngine(config *pangu.Config) (engine *Engine, err error) {
 	_panguConfig := new(panguConfig)
 	if err = config.Load(_panguConfig); nil != err {
 		return
 	}
 	database := _panguConfig.Database
 
-	var dsn string
-	if dsn, err = database.dsn(); nil != err {
-		return
-	}
-
-	engine = new(Engine)
-	if engine.Engine, err = xorm.NewEngine(database.Type, dsn); nil != err {
+	// 创建引擎
+	if engine, err = newXorm(database); nil != err {
 		return
 	}
 
@@ -53,6 +51,38 @@ func newXormEngine(config *pangu.Config) (engine *Engine, err error) {
 	if `` != strings.TrimSpace(database.Suffix) {
 		core.NewSuffixMapper(core.GonicMapper{}, database.Suffix)
 	}
+
+	return
+}
+
+func newXorm(database config) (engine *Engine, err error) {
+	if nil != database.SSH {
+		var auth ssh.AuthMethod
+		if `` != database.SSH.Password {
+			auth = ssh.Password(database.SSH.Password)
+		} else {
+			auth = sshtunnel.PrivateKeyFile(database.SSH.Keyfile)
+		}
+		tunnel := sshtunnel.NewSSHTunnel(
+			fmt.Sprintf(`%s@%s`, database.SSH.Username, database.SSH.Addr),
+			auth,
+			database.Addr,
+			`0`,
+		)
+		go func() {
+			err = tunnel.Start()
+		}()
+
+		database.Addr = fmt.Sprintf(`127.0.0.1:%d`, tunnel.Local.Port)
+	}
+
+	var dsn string
+	if dsn, err = database.dsn(); nil != err {
+		return
+	}
+
+	engine = new(Engine)
+	engine.Engine, err = xorm.NewEngine(database.Type, dsn)
 
 	return
 }

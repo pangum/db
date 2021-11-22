@@ -37,6 +37,9 @@ type config struct {
 	Ping bool `default:"true" json:"ping" yaml:"ping"`
 	// 是否显示SQL执行语句
 	Show bool `default:"false" json:"show" yaml:"show"`
+
+	// SSH代理连接
+	SSH *_ssh `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
 }
 
 func (c *config) dsn() (dsn string, err error) {

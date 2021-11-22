@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	if err := pangu.New().Provides(newXormEngine, newTx); nil != err {
+	if err := pangu.New().Provides(newEngine, newTx); nil != err {
 		panic(err)
 	}
 }
