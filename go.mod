@@ -4,10 +4,12 @@ go 1.16
 
 require (
 	github.com/elliotchance/sshtunnel v1.3.1
-	github.com/pangum/logging v0.0.3
-	github.com/pangum/pangu v0.0.1
-	github.com/storezhang/gox v1.7.9
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	github.com/pangum/logging v0.0.7
+	github.com/pangum/pangu v0.0.9
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/storezhang/gox v1.8.1
+	golang.org/x/crypto v0.0.0-20211115234514-b4de73f9ece8
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.1.0
 )
