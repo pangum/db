@@ -1,6 +1,8 @@
 package database
 
 type _ssh struct {
+	// 是否开户
+	Enabled bool `default:"true" json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 地址
 	Addr string `json:"addr" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port"`
 	// 用户名

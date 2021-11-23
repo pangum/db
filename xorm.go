@@ -2,9 +2,13 @@ package database
 
 import (
 	`fmt`
+	log1 `log`
+	`os`
 	`strings`
+	`time`
 
 	`github.com/elliotchance/sshtunnel`
+	`github.com/pangum/logging`
 	`github.com/pangum/pangu`
 	`golang.org/x/crypto/ssh`
 	`xorm.io/core`
@@ -13,7 +17,7 @@ import (
 )
 
 // 创建Xorm操作引擎
-func newEngine(config *pangu.Config) (engine *Engine, err error) {
+func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, err error) {
 	_panguConfig := new(panguConfig)
 	if err = config.Load(_panguConfig); nil != err {
 		return
@@ -56,23 +60,21 @@ func newEngine(config *pangu.Config) (engine *Engine, err error) {
 }
 
 func newXorm(database config) (engine *Engine, err error) {
-	if nil != database.SSH {
+	if nil != database.SSH && database.SSH.Enabled {
 		var auth ssh.AuthMethod
 		if `` != database.SSH.Password {
 			auth = ssh.Password(database.SSH.Password)
 		} else {
 			auth = sshtunnel.PrivateKeyFile(database.SSH.Keyfile)
 		}
-		tunnel := sshtunnel.NewSSHTunnel(
-			fmt.Sprintf(`%s@%s`, database.SSH.Username, database.SSH.Addr),
-			auth,
-			database.Addr,
-			`0`,
-		)
+		host := fmt.Sprintf(`%s@%s`, database.SSH.Username, database.SSH.Addr)
+		tunnel := sshtunnel.NewSSHTunnel(host, auth, database.Addr, `65512`)
+		tunnel.Log = log1.New(os.Stdout, "", log1.Ldate|log1.Lmicroseconds)
 		go func() {
 			err = tunnel.Start()
 		}()
 
+		time.Sleep(100 * time.Millisecond)
 		database.Addr = fmt.Sprintf(`127.0.0.1:%d`, tunnel.Local.Port)
 	}
 
