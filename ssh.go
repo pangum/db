@@ -4,7 +4,7 @@ type _ssh struct {
 	// 是否开户
 	Enabled bool `default:"true" json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 地址
-	Addr string `json:"addr" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port"`
+	Addr string `json:"addr" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port|hostname"`
 	// 用户名
 	Username string `json:"username" yaml:"username" xml:"username" toml:"username"`
 	// 密码

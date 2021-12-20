@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/elliotchance/sshtunnel v1.3.1
-	github.com/pangum/logging v0.0.7
+	github.com/pangum/logging v0.0.9
 	github.com/pangum/pangu v0.0.9
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/storezhang/gox v1.8.1
@@ -16,3 +16,4 @@ require (
 
 // replace github.com/storezhang/gox => ../gox
 // replace github.com/storezhang/pangu => ../pangu
+// replace github.com/pangum/logging => ../logging

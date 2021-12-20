@@ -29,6 +29,8 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 		return
 	}
 
+	// 替换成统一的日志框架
+	engine.SetLogger(newXormLogger(logger))
 	// 调试模式下打开各种可调试的选项
 	if database.Show {
 		engine.ShowSQL(true)
