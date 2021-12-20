@@ -22,51 +22,35 @@ func newXormLogger(logger *logging.Logger) *xormLogger {
 }
 
 func (xl *xormLogger) Debug(v ...interface{}) {
-	if xl.showed {
-		xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
-	}
+	xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
 }
 
 func (xl *xormLogger) Debugf(format string, v ...interface{}) {
-	if xl.showed {
-		xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
-	}
+	xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
 }
 
 func (xl *xormLogger) Info(v ...interface{}) {
-	if xl.showed {
-		xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
-	}
+	xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
 }
 
 func (xl *xormLogger) Infof(format string, v ...interface{}) {
-	if xl.showed {
-		xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
-	}
+	xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
 }
 
 func (xl *xormLogger) Warn(v ...interface{}) {
-	if xl.showed {
-		xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
-	}
+	xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
 }
 
 func (xl *xormLogger) Warnf(format string, v ...interface{}) {
-	if xl.showed {
-		xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
-	}
+	xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
 }
 
 func (xl *xormLogger) Error(v ...interface{}) {
-	if xl.showed {
-		xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
-	}
+	xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
 }
 
 func (xl *xormLogger) Errorf(format string, v ...interface{}) {
-	if xl.showed {
-		xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
-	}
+	xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
 }
 
 func (xl *xormLogger) Level() (level log.LogLevel) {
