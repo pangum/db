@@ -2,8 +2,6 @@ package database
 
 import (
 	`fmt`
-	log1 `log`
-	`os`
 	`strings`
 	`time`
 
@@ -13,7 +11,6 @@ import (
 	`golang.org/x/crypto/ssh`
 	`xorm.io/core`
 	`xorm.io/xorm`
-	`xorm.io/xorm/log`
 )
 
 // 创建Xorm操作引擎
@@ -25,7 +22,7 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 	database := _panguConfig.Database
 
 	// 创建引擎
-	if engine, err = newXorm(database); nil != err {
+	if engine, err = newXorm(database, logger); nil != err {
 		return
 	}
 
@@ -33,14 +30,13 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 	engine.SetLogger(newXormLogger(logger))
 	// 调试模式下打开各种可调试的选项
 	if database.Show {
-		engine.ShowSQL(true)
-		engine.Logger().SetLevel(log.LOG_DEBUG)
+		engine.ShowSQL()
 	}
 
 	// 配置数据库连接池
-	engine.SetMaxOpenConns(database.Connection.MaxOpen)
-	engine.SetMaxIdleConns(database.Connection.MaxIdle)
-	engine.SetConnMaxLifetime(database.Connection.MaxLifetime)
+	engine.SetMaxOpenConns(database.Connection.Open)
+	engine.SetMaxIdleConns(database.Connection.Idle)
+	engine.SetConnMaxLifetime(database.Connection.Lifetime)
 
 	// 测试数据库连接成功
 	if database.Ping {
@@ -61,8 +57,8 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 	return
 }
 
-func newXorm(database config) (engine *Engine, err error) {
-	if nil != database.SSH && database.SSH.Enabled {
+func newXorm(database config, logger *logging.Logger) (engine *Engine, err error) {
+	if nil != database.SSH && database.SSH.Enable() {
 		var auth ssh.AuthMethod
 		if `` != database.SSH.Password {
 			auth = ssh.Password(database.SSH.Password)
@@ -71,7 +67,7 @@ func newXorm(database config) (engine *Engine, err error) {
 		}
 		host := fmt.Sprintf(`%s@%s`, database.SSH.Username, database.SSH.Addr)
 		tunnel := sshtunnel.NewSSHTunnel(host, auth, database.Addr, `65512`)
-		tunnel.Log = log1.New(os.Stdout, "", log1.Ldate|log1.Lmicroseconds)
+		tunnel.Log = newSSHLogger(logger)
 		go func() {
 			err = tunnel.Start()
 		}()

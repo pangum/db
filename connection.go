@@ -6,9 +6,9 @@ import (
 
 type connection struct {
 	// 最大打开连接数
-	MaxOpen int `default:"150" yaml:"maxOpen" json:"maxOpen"`
+	Open int `default:"150" yaml:"open" json:"open" xml:"open" toml:"open"`
 	// 最大休眠连接数
-	MaxIdle int `default:"30" yaml:"maxIdle" json:"maxIdle"`
+	Idle int `default:"30" yaml:"idle" json:"idle" xml:"idle" toml:"idle"`
 	// 每个连接最大存活时间
-	MaxLifetime time.Duration `default:"5s" yaml:"maxLifetime" json:"maxLifetime"`
+	Lifetime time.Duration `default:"5s" yaml:"lifetime" json:"lifetime" xml:"lifetime" toml:"lifetime"`
 }
