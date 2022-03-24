@@ -1,10 +1,10 @@
 package database
 
 import (
-	`fmt`
+	"fmt"
 
-	`github.com/pangum/logging`
-	`github.com/storezhang/gox/field`
+	"github.com/goexl/gox/field"
+	"github.com/pangum/logging"
 )
 
 type sshLogger struct {

@@ -1,12 +1,12 @@
 package database
 
 import (
-	`runtime`
+	"runtime"
 
-	`github.com/pangum/logging`
-	`github.com/storezhang/gox`
-	`github.com/storezhang/gox/field`
-	`xorm.io/xorm`
+	"github.com/goexl/gox"
+	"github.com/goexl/gox/field"
+	"github.com/pangum/logging"
+	"xorm.io/xorm"
 )
 
 type (
