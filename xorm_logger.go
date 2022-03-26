@@ -1,12 +1,12 @@
 package database
 
 import (
-	"fmt"
+	`fmt`
 
-	"github.com/goexl/gox/field"
-	"github.com/pangum/logging"
-	"github.com/storezhang/simaqian"
-	"xorm.io/xorm/log"
+	`github.com/goexl/gox/field`
+	`github.com/goexl/simaqian`
+	`github.com/pangum/logging`
+	`xorm.io/xorm/log`
 )
 
 type xormLogger struct {
