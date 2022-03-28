@@ -5,7 +5,8 @@ import (
 )
 
 func init() {
-	if err := pangu.New().Provides(newEngine, newTx); nil != err {
-		panic(err)
-	}
+	pangu.New().Dependencies(
+		newEngine,
+		newTx,
+	)
 }
