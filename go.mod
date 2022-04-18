@@ -10,7 +10,7 @@ require (
 	github.com/pangum/pangu v0.1.3
 	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
 	xorm.io/core v0.7.3
-	xorm.io/xorm v1.2.5
+	xorm.io/xorm v1.3.0
 )
 
 require (
