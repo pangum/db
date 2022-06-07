@@ -10,7 +10,7 @@ require (
 	github.com/pangum/pangu v0.1.3
 	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
 	xorm.io/core v0.7.3
-	xorm.io/xorm v1.3.0
+	xorm.io/xorm v1.3.1
 )
 
 require (
@@ -49,7 +49,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	xorm.io/builder v0.3.9 // indirect
+	xorm.io/builder v0.3.11-0.20220531020008-1bd24a7dc978 // indirect
 )
 
 // replace github.com/goexl/gox => ../gox
