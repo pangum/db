@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/elliotchance/sshtunnel v1.3.1
 	github.com/goexl/gox v0.1.2
-	github.com/goexl/simaqian v0.1.8
+	github.com/goexl/simaqian v0.1.9
 	github.com/pangum/logging v0.1.7
 	github.com/pangum/pangu v0.2.4
 	golang.org/x/crypto v0.1.0
