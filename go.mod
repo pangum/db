@@ -4,8 +4,8 @@ go 1.17
 
 require (
 	github.com/elliotchance/sshtunnel v1.3.1
-	github.com/goexl/gox v0.1.2
-	github.com/goexl/simaqian v0.1.8
+	github.com/goexl/gox v0.1.3
+	github.com/goexl/simaqian v0.2.0
 	github.com/pangum/logging v0.1.7
 	github.com/pangum/pangu v0.2.4
 	golang.org/x/crypto v0.1.0
@@ -31,7 +31,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
