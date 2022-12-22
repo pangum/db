@@ -1,12 +1,12 @@
 package database
 
 import (
-	`fmt`
+	"fmt"
 
-	`github.com/goexl/gox/field`
-	`github.com/goexl/simaqian`
-	`github.com/pangum/logging`
-	`xorm.io/xorm/log`
+	"github.com/goexl/gox/field"
+	"github.com/goexl/simaqian"
+	"github.com/pangum/logging"
+	"xorm.io/xorm/log"
 )
 
 type xormLogger struct {
@@ -22,35 +22,35 @@ func newXormLogger(logger *logging.Logger) *xormLogger {
 }
 
 func (xl *xormLogger) Debug(v ...interface{}) {
-	xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
+	xl.logger.Debug("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Debugf(format string, v ...interface{}) {
-	xl.logger.Debug(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
+func (xl *xormLogger) Debugf(format string, v ...any) {
+	xl.logger.Debug("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Info(v ...interface{}) {
-	xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
+func (xl *xormLogger) Info(v ...any) {
+	xl.logger.Info("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Infof(format string, v ...interface{}) {
-	xl.logger.Info(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
+func (xl *xormLogger) Infof(format string, v ...any) {
+	xl.logger.Info("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Warn(v ...interface{}) {
-	xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
+func (xl *xormLogger) Warn(v ...any) {
+	xl.logger.Warn("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Warnf(format string, v ...interface{}) {
-	xl.logger.Warn(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
+func (xl *xormLogger) Warnf(format string, v ...any) {
+	xl.logger.Warn("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Error(v ...interface{}) {
-	xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprint(v...)))
+func (xl *xormLogger) Error(v ...any) {
+	xl.logger.Error("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Errorf(format string, v ...interface{}) {
-	xl.logger.Error(`数据库`, field.String(`xorm`, fmt.Sprintf(format, v...)))
+func (xl *xormLogger) Errorf(format string, v ...any) {
+	xl.logger.Error("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
 func (xl *xormLogger) Level() (level log.LogLevel) {
@@ -74,15 +74,15 @@ func (xl *xormLogger) SetLevel(level log.LogLevel) {
 	var lvl string
 	switch level {
 	case log.LOG_DEBUG:
-		lvl = `debug`
+		lvl = "debug"
 	case log.LOG_INFO:
-		lvl = `info`
+		lvl = "info"
 	case log.LOG_WARNING:
-		lvl = `warn`
+		lvl = "warn"
 	case log.LOG_ERR:
-		lvl = `error`
+		lvl = "error"
 	}
-	xl.logger.Sets(simaqian.Levels(lvl))
+	xl.logger.Enable(simaqian.ParseLevel(lvl))
 }
 
 func (xl *xormLogger) ShowSQL(show ...bool) {
