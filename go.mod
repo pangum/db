@@ -3,7 +3,7 @@ module github.com/pangum/database
 go 1.19
 
 require (
-	github.com/elliotchance/sshtunnel v1.3.1
+	github.com/elliotchance/sshtunnel v1.4.0
 	github.com/goexl/gox v0.1.6
 	github.com/goexl/simaqian v0.2.2
 	github.com/pangum/logging v0.1.9
@@ -31,7 +31,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
