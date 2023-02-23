@@ -1,4 +1,4 @@
-module github.com/pangum/database
+module github.com/pangum/db
 
 go 1.19
 

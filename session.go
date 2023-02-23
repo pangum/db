@@ -1,10 +1,10 @@
-package database
+package db
 
 import (
-	`xorm.io/xorm`
+	"xorm.io/xorm"
 )
 
-// Session 描述一个事务
+// Session 事务
 type Session struct {
 	*xorm.Session
 }

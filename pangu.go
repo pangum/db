@@ -1,7 +1,7 @@
-package database
+package db
 
 import (
-	`github.com/pangum/pangu`
+	"github.com/pangum/pangu"
 )
 
 func init() {

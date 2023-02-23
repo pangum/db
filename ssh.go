@@ -1,4 +1,4 @@
-package database
+package db
 
 type _ssh struct {
 	// 是否开户

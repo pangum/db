@@ -1,7 +1,7 @@
-package database
+package db
 
 import (
-	`time`
+	"time"
 )
 
 type connection struct {

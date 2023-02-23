@@ -1,4 +1,4 @@
-package database
+package db
 
 import (
 	"errors"
@@ -31,7 +31,7 @@ type config struct {
 	Schema string `default:"data.db" json:"schema" yaml:"schema" xml:"schema" toml:"schema" validate:"required"`
 
 	// 额外参数
-	Parameters string `default:"parseTime=true" json:"parameters" yaml:"parameters" xml:"parameters" toml:"parameters"`
+	Parameters string `default:"parseTime=true&loc=Local" json:"parameters" yaml:"parameters" xml:"parameters" toml:"parameters"`
 	// 是否连接时测试数据库连接是否完好
 	Ping bool `default:"true" json:"ping" yaml:"ping" xml:"ping" toml:"ping"`
 	// 是否显示执行语句

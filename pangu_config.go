@@ -1,6 +1,6 @@
-package database
+package db
 
 type panguConfig struct {
 	// 关系型数据库配置
-	Database config `json:"database" yaml:"database" xml:"database" toml:"database" validate:"required"`
+	Db config `json:"db" yaml:"db" xml:"db" toml:"db validate:"required"`
 }

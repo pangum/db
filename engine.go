@@ -1,7 +1,7 @@
-package database
+package db
 
 import (
-	`xorm.io/xorm`
+	"xorm.io/xorm"
 )
 
 // Engine 数据库引擎简单封装
