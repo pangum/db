@@ -57,32 +57,31 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 	return
 }
 
-func newXorm(database config, logger *logging.Logger) (engine *Engine, err error) {
-	if nil != database.SSH && database.SSH.Enable() {
+func newXorm(db *config, logger *logging.Logger) (engine *Engine, err error) {
+	if nil != db.SSH && db.SSH.Enable() {
 		var auth ssh.AuthMethod
-		if "" != database.SSH.Password {
-			auth = ssh.Password(database.SSH.Password)
+		if "" != db.SSH.Password {
+			auth = ssh.Password(db.SSH.Password)
 		} else {
-			auth = sshtunnel.PrivateKeyFile(database.SSH.Keyfile)
+			auth = sshtunnel.PrivateKeyFile(db.SSH.Keyfile)
 		}
-		host := fmt.Sprintf("%s@%s", database.SSH.Username, database.SSH.Addr)
-		tunnel := sshtunnel.NewSSHTunnel(host, auth, database.Addr, `65512`)
+		host := fmt.Sprintf("%s@%s", db.SSH.Username, db.SSH.Addr)
+		tunnel := sshtunnel.NewSSHTunnel(host, auth, db.Addr, `65512`)
 		tunnel.Log = newSSHLogger(logger)
 		go func() {
 			err = tunnel.Start()
 		}()
 
 		time.Sleep(100 * time.Millisecond)
-		database.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+		db.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
 	}
 
-	var dsn string
-	if dsn, err = database.dsn(); nil != err {
-		return
+	if dsn, de := db.dsn(); nil != de {
+		err = de
+	} else {
+		engine = new(Engine)
+		engine.Engine, err = xorm.NewEngine(db.Type, dsn)
 	}
-
-	engine = new(Engine)
-	engine.Engine, err = xorm.NewEngine(database.Type, dsn)
 
 	return
 }
