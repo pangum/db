@@ -1,9 +1,11 @@
 package db
 
 import (
-	"errors"
 	"fmt"
 	"strings"
+
+	"github.com/goexl/exc"
+	"github.com/goexl/gox/field"
 )
 
 type config struct {
@@ -18,6 +20,7 @@ type config struct {
 	// 授权，密码
 	Password string `json:"password" yaml:"password" xml:"password" toml:"password"`
 	// 连接协议
+	// nolint: lll
 	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" xml:"protocol" toml:"password" validate:"required,oneof=tcp udp"`
 
 	// 连接池配置
@@ -31,6 +34,7 @@ type config struct {
 	Schema string `default:"data.db" json:"schema" yaml:"schema" xml:"schema" toml:"schema" validate:"required"`
 
 	// 额外参数
+	// nolint: lll
 	Parameters string `default:"parseTime=true&loc=Local" json:"parameters" yaml:"parameters" xml:"parameters" toml:"parameters"`
 	// 是否连接时测试数据库连接是否完好
 	Ping bool `default:"true" json:"ping" yaml:"ping" xml:"ping" toml:"ping"`
@@ -51,7 +55,7 @@ func (c *config) dsn() (dsn string, err error) {
 	case "sqlite3":
 		dsn = c.Schema
 	default:
-		err = errors.New("不支持的数据库类型")
+		err = exc.NewField("不支持的数据库类型", field.New("type", c.Type))
 	}
 	if nil != err {
 		return
