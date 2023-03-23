@@ -10,11 +10,11 @@ import (
 )
 
 type xormLogger struct {
-	logger *logging.Logger
+	logger logging.Logger
 	showed bool
 }
 
-func newXormLogger(logger *logging.Logger) *xormLogger {
+func newXormLogger(logger logging.Logger) *xormLogger {
 	return &xormLogger{
 		logger: logger,
 		showed: false,

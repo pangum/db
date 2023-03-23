@@ -13,7 +13,7 @@ type (
 	// Tx 事务控制
 	Tx struct {
 		engine *Engine
-		logger *logging.Logger
+		logger logging.Logger
 	}
 
 	txFun  func(tx *Session) (err error)
@@ -21,7 +21,7 @@ type (
 )
 
 // 事务控制
-func newTx(engine *Engine, logger *logging.Logger) *Tx {
+func newTx(engine *Engine, logger logging.Logger) *Tx {
 	return &Tx{
 		engine: engine,
 		logger: logger,

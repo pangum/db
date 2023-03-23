@@ -14,12 +14,12 @@ import (
 )
 
 // 创建Xorm操作引擎
-func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, err error) {
-	_panguConfig := new(panguConfig)
-	if err = config.Load(_panguConfig); nil != err {
+func newEngine(config *pangu.Config, logger logging.Logger) (engine *Engine, err error) {
+	wrap := new(wrapper)
+	if err = config.Load(wrap); nil != err {
 		return
 	}
-	db := _panguConfig.Db
+	db := wrap.Db
 
 	// 创建引擎
 	if engine, err = newXorm(db, logger); nil != err {
@@ -57,7 +57,7 @@ func newEngine(config *pangu.Config, logger *logging.Logger) (engine *Engine, er
 	return
 }
 
-func newXorm(db *config, logger *logging.Logger) (engine *Engine, err error) {
+func newXorm(db *config, logger logging.Logger) (engine *Engine, err error) {
 	if nil != db.SSH && db.SSH.Enable() {
 		var auth ssh.AuthMethod
 		if "" != db.SSH.Password {
