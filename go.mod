@@ -6,7 +6,7 @@ require (
 	github.com/elliotchance/sshtunnel v1.4.0
 	github.com/goexl/exc v0.0.5
 	github.com/goexl/gox v0.3.0
-	github.com/goexl/simaqian v0.2.4
+	github.com/goexl/simaqian v0.2.5
 	github.com/pangum/logging v0.2.0
 	github.com/pangum/pangu v0.3.1
 	golang.org/x/crypto v0.7.0
