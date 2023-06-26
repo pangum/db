@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/elliotchance/sshtunnel"
+	"github.com/goexl/gox"
 	"github.com/pangum/logging"
 	"github.com/pangum/pangu"
 	"golang.org/x/crypto/ssh"
@@ -58,25 +59,9 @@ func newEngine(config *pangu.Config, logger logging.Logger) (engine *Engine, err
 }
 
 func newXorm(db *config, logger logging.Logger) (engine *Engine, err error) {
-	if nil != db.SSH && db.SSH.Enable() {
-		var auth ssh.AuthMethod
-		if "" != db.SSH.Password {
-			auth = ssh.Password(db.SSH.Password)
-		} else {
-			auth = sshtunnel.PrivateKeyFile(db.SSH.Keyfile)
-		}
-		host := fmt.Sprintf("%s@%s", db.SSH.Username, db.SSH.Addr)
-		tunnel := sshtunnel.NewSSHTunnel(host, auth, db.Addr, `65512`)
-		tunnel.Log = newSSHLogger(logger)
-		go func() {
-			err = tunnel.Start()
-		}()
-
-		time.Sleep(100 * time.Millisecond)
-		db.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
-	}
-
-	if dsn, de := db.dsn(); nil != de {
+	if se := enableSSH(db, logger); nil != se {
+		err = se
+	} else if dsn, de := db.dsn(); nil != de {
 		err = de
 	} else {
 		engine = new(Engine)
@@ -84,4 +69,29 @@ func newXorm(db *config, logger logging.Logger) (engine *Engine, err error) {
 	}
 
 	return
+}
+
+func enableSSH(db *config, logger logging.Logger) (err error) {
+	if nil != db.SSH && !db.SSH.Enable() {
+		return
+	}
+
+	password := db.SSH.Password
+	keyfile := db.SSH.Keyfile
+	auth := gox.Ift("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
+	host := fmt.Sprintf("%s@%s", db.SSH.Username, db.SSH.Addr)
+	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, db.Addr, "65512"); nil != ne {
+		err = ne
+	} else {
+		tunnel.Log = newSSHLogger(logger)
+		go startTunnel(tunnel)
+		time.Sleep(100 * time.Millisecond)
+		db.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+	}
+
+	return
+}
+
+func startTunnel(tunnel *sshtunnel.SSHTunnel) {
+	_ = tunnel.Start()
 }
