@@ -68,3 +68,7 @@ func (c *config) dsn() (dsn string, err error) {
 
 	return
 }
+
+func (c *config) sshEnable() bool {
+	return nil != c.SSH && c.SSH.Enable()
+}

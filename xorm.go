@@ -71,22 +71,22 @@ func newXorm(db *config, logger logging.Logger) (engine *Engine, err error) {
 	return
 }
 
-func enableSSH(db *config, logger logging.Logger) (err error) {
-	if nil == db.SSH && !db.SSH.Enable() {
+func enableSSH(conf *config, logger logging.Logger) (err error) {
+	if !conf.sshEnable() {
 		return
 	}
 
-	password := db.SSH.Password
-	keyfile := db.SSH.Keyfile
+	password := conf.SSH.Password
+	keyfile := conf.SSH.Keyfile
 	auth := gox.Ift("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
-	host := fmt.Sprintf("%s@%s", db.SSH.Username, db.SSH.Addr)
-	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, db.Addr, "65512"); nil != ne {
+	host := fmt.Sprintf("%s@%s", conf.SSH.Username, conf.SSH.Addr)
+	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65512"); nil != ne {
 		err = ne
 	} else {
 		tunnel.Log = newSSHLogger(logger)
 		go startTunnel(tunnel)
 		time.Sleep(100 * time.Millisecond)
-		db.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+		conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
 	}
 
 	return
