@@ -72,7 +72,7 @@ func newXorm(db *config, logger logging.Logger) (engine *Engine, err error) {
 }
 
 func enableSSH(db *config, logger logging.Logger) (err error) {
-	if nil != db.SSH && !db.SSH.Enable() {
+	if nil == db.SSH && !db.SSH.Enable() {
 		return
 	}
 
