@@ -7,6 +7,6 @@ import (
 func init() {
 	pangu.New().Dependencies(
 		newEngine,
-		newTx,
+		newTransaction,
 	)
 }
