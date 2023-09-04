@@ -3,7 +3,7 @@ module github.com/pangum/db
 go 1.19
 
 require (
-	github.com/elliotchance/sshtunnel v1.5.0
+	github.com/elliotchance/sshtunnel v1.6.0
 	github.com/goexl/exc v0.0.5
 	github.com/goexl/gox v0.3.6
 	github.com/goexl/simaqian v0.2.5
