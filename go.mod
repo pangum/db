@@ -11,7 +11,7 @@ require (
 	github.com/pangum/pangu v0.3.2
 	golang.org/x/crypto v0.13.0
 	xorm.io/core v0.7.3
-	xorm.io/xorm v1.3.2
+	xorm.io/xorm v1.3.3
 )
 
 require (
@@ -50,7 +50,6 @@ require (
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	xorm.io/builder v0.3.12 // indirect
 )
