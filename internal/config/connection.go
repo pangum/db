@@ -1,10 +1,10 @@
-package db
+package config
 
 import (
 	"time"
 )
 
-type connection struct {
+type Connection struct {
 	// 最大打开连接数
 	Open int `default:"150" yaml:"open" json:"open" xml:"open" toml:"open"`
 	// 最大休眠连接数

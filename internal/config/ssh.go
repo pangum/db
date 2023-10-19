@@ -1,6 +1,6 @@
-package db
+package config
 
-type _ssh struct {
+type Ssh struct {
 	// 是否开户
 	Enabled *bool `json:"enabled" yaml:"enabled" xml:"enabled" toml:"enabled"`
 	// 地址
@@ -13,6 +13,6 @@ type _ssh struct {
 	Keyfile string `json:"keyfile" yaml:"keyfile" xml:"keyfile" toml:"keyfile" validate:"required_without=Password"`
 }
 
-func (s *_ssh) Enable() bool {
+func (s *Ssh) Enable() bool {
 	return nil == s.Enabled || *s.Enabled
 }

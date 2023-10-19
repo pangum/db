@@ -1,4 +1,4 @@
-package db
+package internal
 
 import (
 	"fmt"
@@ -9,51 +9,51 @@ import (
 	"xorm.io/xorm/log"
 )
 
-type xormLogger struct {
+type Xorm struct {
 	logger logging.Logger
 	showed bool
 }
 
-func newXormLogger(logger logging.Logger) *xormLogger {
-	return &xormLogger{
+func NewXorm(logger logging.Logger) *Xorm {
+	return &Xorm{
 		logger: logger,
 		showed: false,
 	}
 }
 
-func (xl *xormLogger) Debug(v ...interface{}) {
+func (xl *Xorm) Debug(v ...interface{}) {
 	xl.logger.Debug("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Debugf(format string, v ...any) {
+func (xl *Xorm) Debugf(format string, v ...any) {
 	xl.logger.Debug("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Info(v ...any) {
+func (xl *Xorm) Info(v ...any) {
 	xl.logger.Info("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Infof(format string, v ...any) {
+func (xl *Xorm) Infof(format string, v ...any) {
 	xl.logger.Info("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Warn(v ...any) {
+func (xl *Xorm) Warn(v ...any) {
 	xl.logger.Warn("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Warnf(format string, v ...any) {
+func (xl *Xorm) Warnf(format string, v ...any) {
 	xl.logger.Warn("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Error(v ...any) {
+func (xl *Xorm) Error(v ...any) {
 	xl.logger.Error("数据库", field.New("xorm", fmt.Sprint(v...)))
 }
 
-func (xl *xormLogger) Errorf(format string, v ...any) {
+func (xl *Xorm) Errorf(format string, v ...any) {
 	xl.logger.Error("数据库", field.New("xorm", fmt.Sprintf(format, v...)))
 }
 
-func (xl *xormLogger) Level() (level log.LogLevel) {
+func (xl *Xorm) Level() (level log.LogLevel) {
 	switch xl.logger.Level() {
 	case simaqian.LevelDebug:
 		level = log.LOG_DEBUG
@@ -70,7 +70,7 @@ func (xl *xormLogger) Level() (level log.LogLevel) {
 	return
 }
 
-func (xl *xormLogger) SetLevel(level log.LogLevel) {
+func (xl *Xorm) SetLevel(level log.LogLevel) {
 	var lvl string
 	switch level {
 	case log.LOG_DEBUG:
@@ -85,7 +85,7 @@ func (xl *xormLogger) SetLevel(level log.LogLevel) {
 	xl.logger.Enable(simaqian.ParseLevel(lvl))
 }
 
-func (xl *xormLogger) ShowSQL(show ...bool) {
+func (xl *Xorm) ShowSQL(show ...bool) {
 	if 0 == len(show) {
 		xl.showed = true
 	} else {
@@ -93,6 +93,6 @@ func (xl *xormLogger) ShowSQL(show ...bool) {
 	}
 }
 
-func (xl *xormLogger) IsShowSQL() bool {
+func (xl *Xorm) IsShowSQL() bool {
 	return xl.showed
 }

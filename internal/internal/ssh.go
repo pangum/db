@@ -1,4 +1,4 @@
-package db
+package internal
 
 import (
 	"fmt"
@@ -7,16 +7,16 @@ import (
 	"github.com/pangum/logging"
 )
 
-type sshLogger struct {
+type Ssh struct {
 	logger logging.Logger
 }
 
-func newSSHLogger(logger logging.Logger) *sshLogger {
-	return &sshLogger{
+func NewSsh(logger logging.Logger) *Ssh {
+	return &Ssh{
 		logger: logger,
 	}
 }
 
-func (sl *sshLogger) Printf(format string, args ...any) {
+func (sl *Ssh) Printf(format string, args ...any) {
 	sl.logger.Info("连接隧道", field.New("ssh", fmt.Sprintf(format, args...)))
 }

@@ -1,10 +1,8 @@
 package db
 
 import (
-	"xorm.io/xorm"
+	"github.com/pangum/db/internal/db"
 )
 
-// Engine 数据库引擎简单封装
-type Engine struct {
-	*xorm.Engine
-}
+// Engine 操作引擎
+type Engine = db.Engine

@@ -1,10 +1,8 @@
 package db
 
 import (
-	"xorm.io/xorm"
+	"github.com/pangum/db/internal/db"
 )
 
-// Session 事务
-type Session struct {
-	*xorm.Session
-}
+// Session 会话
+type Session = db.Session

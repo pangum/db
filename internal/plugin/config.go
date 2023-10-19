@@ -1,4 +1,4 @@
-package db
+package plugin
 
 import (
 	"fmt"
@@ -6,9 +6,10 @@ import (
 
 	"github.com/goexl/exc"
 	"github.com/goexl/gox/field"
+	"github.com/pangum/db/internal/config"
 )
 
-type config struct {
+type Config struct {
 	// 数据库类型
 	// nolint:lll
 	Type string `default:"sqlite3" json:"type" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
@@ -24,7 +25,7 @@ type config struct {
 	Protocol string `default:"tcp" json:"protocol" yaml:"protocol" xml:"protocol" toml:"password" validate:"required,oneof=tcp udp"`
 
 	// 连接池配置
-	Connection connection `json:"connection" yaml:"connection" xml:"connection" toml:"connection"`
+	Connection config.Connection `json:"connection" yaml:"connection" xml:"connection" toml:"connection"`
 
 	// 表名的前缀
 	Suffix string `json:"suffix" yaml:"suffix" xml:"suffix" toml:"suffix"`
@@ -42,10 +43,10 @@ type config struct {
 	Show bool `default:"false" json:"show" yaml:"show" xml:"show" toml:"show"`
 
 	// SSH代理连接
-	SSH *_ssh `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
+	SSH *config.Ssh `json:"ssh" yaml:"ssh" xml:"ssh" toml:"ssh"`
 }
 
-func (c *config) dsn() (dsn string, err error) {
+func (c *Config) dsn() (dsn string, err error) {
 	switch strings.ToLower(c.Type) {
 	case "mysql":
 		dsn = fmt.Sprintf("%s:%s@%s(%s)", c.Username, c.Password, c.Protocol, c.Addr)
@@ -69,6 +70,6 @@ func (c *config) dsn() (dsn string, err error) {
 	return
 }
 
-func (c *config) sshEnable() bool {
+func (c *Config) sshEnable() bool {
 	return nil != c.SSH && c.SSH.Enable()
 }
