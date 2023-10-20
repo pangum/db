@@ -23,8 +23,8 @@ type Creator struct {
 
 func (c *Creator) New(config *pangu.Config, logger simaqian.Logger) (engine *db.Engine, err error) {
 	wrapper := new(Wrapper)
-	if le := config.Load(wrapper); nil != le {
-		err = le
+	if ge := config.Build().Get(wrapper); nil != ge {
+		err = ge
 	} else if created, ne := c.new(wrapper.Db, logger); nil != ne {
 		err = ne
 	} else if se := c.setup(wrapper.Db, created, logger); nil != se {

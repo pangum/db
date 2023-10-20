@@ -8,7 +8,7 @@ require (
 	github.com/goexl/gox v0.3.8
 	github.com/goexl/simaqian v0.4.0
 	github.com/pangum/logging v0.2.5
-	github.com/pangum/pangu v0.3.4
+	github.com/pangum/pangu v0.3.6
 	golang.org/x/crypto v0.14.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.3
