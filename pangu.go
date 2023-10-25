@@ -6,5 +6,9 @@ import (
 )
 
 func init() {
-	pangu.New().Get().Dependencies().Build().Provide(new(plugin.Creator).New)
+	creator := new(plugin.Creator)
+	pangu.New().Get().Dependency().Put(
+		creator.New,
+		creator.NewTransaction,
+	).Build().Build().Apply()
 }

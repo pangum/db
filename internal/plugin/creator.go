@@ -7,10 +7,9 @@ import (
 
 	"github.com/elliotchance/sshtunnel"
 	"github.com/goexl/gox"
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 	"github.com/pangum/db/internal/db"
 	"github.com/pangum/db/internal/internal"
-	"github.com/pangum/logging"
 	"github.com/pangum/pangu"
 	"golang.org/x/crypto/ssh"
 	"xorm.io/core"
@@ -21,7 +20,7 @@ type Creator struct {
 	// 用于解决命名空间
 }
 
-func (c *Creator) New(config *pangu.Config, logger simaqian.Logger) (engine *db.Engine, err error) {
+func (c *Creator) New(config *pangu.Config, logger log.Logger) (engine *db.Engine, err error) {
 	wrapper := new(Wrapper)
 	if ge := config.Build().Get(wrapper); nil != ge {
 		err = ge
@@ -36,7 +35,11 @@ func (c *Creator) New(config *pangu.Config, logger simaqian.Logger) (engine *db.
 	return
 }
 
-func (c *Creator) setup(config *Config, engine *db.Engine, logger simaqian.Logger) (err error) {
+func (c *Creator) NewTransaction(engine *db.Engine, logger log.Logger) *db.Transaction {
+	return db.NewTransaction(engine, logger)
+}
+
+func (c *Creator) setup(config *Config, engine *db.Engine, logger log.Logger) (err error) {
 	// 替换成统一的日志框架
 	engine.SetLogger(internal.NewXorm(logger))
 	// 调试模式下打开各种可调试的选项
@@ -66,7 +69,7 @@ func (c *Creator) setup(config *Config, engine *db.Engine, logger simaqian.Logge
 	return
 }
 
-func (c *Creator) new(config *Config, logger logging.Logger) (engine *db.Engine, err error) {
+func (c *Creator) new(config *Config, logger log.Logger) (engine *db.Engine, err error) {
 	if se := c.enableSSH(config, logger); nil != se {
 		err = se
 	} else if dsn, de := config.dsn(); nil != de {
@@ -79,7 +82,7 @@ func (c *Creator) new(config *Config, logger logging.Logger) (engine *db.Engine,
 	return
 }
 
-func (c *Creator) enableSSH(conf *Config, logger simaqian.Logger) (err error) {
+func (c *Creator) enableSSH(conf *Config, logger log.Logger) (err error) {
 	if !conf.sshEnable() {
 		return
 	}

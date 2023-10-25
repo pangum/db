@@ -5,7 +5,7 @@ import (
 
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
-	"github.com/pangum/logging"
+	"github.com/goexl/log"
 	"xorm.io/xorm"
 )
 
@@ -13,10 +13,10 @@ type Transaction struct {
 	gox.CannotCopy
 
 	engine *Engine
-	logger logging.Logger
+	logger log.Logger
 }
 
-func NewTransaction(engine *Engine, logger logging.Logger) *Transaction {
+func NewTransaction(engine *Engine, logger log.Logger) *Transaction {
 	return &Transaction{
 		engine: engine,
 		logger: logger,
