@@ -7,6 +7,7 @@ import (
 
 	"github.com/elliotchance/sshtunnel"
 	"github.com/goexl/gox"
+	"github.com/goexl/gox/field"
 	"github.com/goexl/log"
 	"github.com/pangum/db/internal/db"
 	"github.com/pangum/db/internal/internal"
@@ -16,11 +17,11 @@ import (
 	"xorm.io/xorm"
 )
 
-type Creator struct {
-	// 用于解决命名空间
+type Constructor struct {
+	// 构造方法
 }
 
-func (c *Creator) New(config *pangu.Config, logger log.Logger) (engine *db.Engine, err error) {
+func (c *Constructor) New(config *pangu.Config, logger log.Logger) (engine *db.Engine, err error) {
 	wrapper := new(Wrapper)
 	if ge := config.Build().Get(wrapper); nil != ge {
 		err = ge
@@ -35,11 +36,11 @@ func (c *Creator) New(config *pangu.Config, logger log.Logger) (engine *db.Engin
 	return
 }
 
-func (c *Creator) NewTransaction(engine *db.Engine, logger log.Logger) *db.Transaction {
+func (c *Constructor) NewTransaction(engine *db.Engine, logger log.Logger) *db.Transaction {
 	return db.NewTransaction(engine, logger)
 }
 
-func (c *Creator) setup(config *Config, engine *db.Engine, logger log.Logger) (err error) {
+func (c *Constructor) setup(config *Config, engine *db.Engine, logger log.Logger) (err error) {
 	// 替换成统一的日志框架
 	engine.SetLogger(internal.NewXorm(logger))
 	// 调试模式下打开各种可调试的选项
@@ -63,13 +64,14 @@ func (c *Creator) setup(config *Config, engine *db.Engine, logger log.Logger) (e
 
 	// 测试数据库连接成功
 	if config.Ping {
+		logger.Info("开始测试数据库连接", field.New("config", config))
 		err = engine.Ping()
 	}
 
 	return
 }
 
-func (c *Creator) new(config *Config, logger log.Logger) (engine *db.Engine, err error) {
+func (c *Constructor) new(config *Config, logger log.Logger) (engine *db.Engine, err error) {
 	if se := c.enableSSH(config, logger); nil != se {
 		err = se
 	} else if dsn, de := config.dsn(); nil != de {
@@ -82,7 +84,7 @@ func (c *Creator) new(config *Config, logger log.Logger) (engine *db.Engine, err
 	return
 }
 
-func (c *Creator) enableSSH(conf *Config, logger log.Logger) (err error) {
+func (c *Constructor) enableSSH(conf *Config, logger log.Logger) (err error) {
 	if !conf.sshEnable() {
 		return
 	}
@@ -103,6 +105,6 @@ func (c *Creator) enableSSH(conf *Config, logger log.Logger) (err error) {
 	return
 }
 
-func (c *Creator) startTunnel(tunnel *sshtunnel.SSHTunnel) {
+func (c *Constructor) startTunnel(tunnel *sshtunnel.SSHTunnel) {
 	_ = tunnel.Start()
 }
