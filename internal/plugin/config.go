@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/goexl/exc"
+	"github.com/goexl/exception"
 	"github.com/goexl/gox/field"
 	"github.com/pangum/db/internal/config"
 )
@@ -56,7 +56,7 @@ func (c *Config) dsn() (dsn string, err error) {
 	case "sqlite3":
 		dsn = c.Schema
 	default:
-		err = exc.NewField("不支持的数据库类型", field.New("type", c.Type))
+		err = exception.New().Message("不支持的数据库类型").Field(field.New("type", c.Type)).Build()
 	}
 	if nil != err {
 		return
