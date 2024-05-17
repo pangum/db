@@ -6,9 +6,12 @@ import (
 )
 
 func init() {
-	creator := new(plugin.Constructor)
+	ctor := new(plugin.Constructor)
 	pangu.New().Get().Dependency().Put(
-		creator.New,
-		creator.NewTransaction,
+		ctor.Config,
+		ctor.Sync,
+		ctor.New,
+		ctor.NewTransaction,
+		ctor.NewSynchronizer,
 	).Build().Build().Apply()
 }

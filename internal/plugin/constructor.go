@@ -9,6 +9,7 @@ import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/log"
+	"github.com/pangum/db/internal/config"
 	"github.com/pangum/db/internal/db"
 	"github.com/pangum/db/internal/internal"
 	"github.com/pangum/pangu"
@@ -21,13 +22,10 @@ type Constructor struct {
 	// 构造方法
 }
 
-func (c *Constructor) New(config *pangu.Config, logger log.Logger) (engine *db.Engine, err error) {
-	wrapper := new(Wrapper)
-	if ge := config.Build().Get(wrapper); nil != ge {
-		err = ge
-	} else if created, ne := c.new(wrapper.Db, logger); nil != ne {
+func (c *Constructor) New(config *Config, logger log.Logger) (engine *db.Engine, err error) {
+	if created, ne := c.new(config, logger); nil != ne {
 		err = ne
-	} else if se := c.setup(wrapper.Db, created, logger); nil != se {
+	} else if se := c.setup(config, created, logger); nil != se {
 		err = se
 	} else {
 		engine = created
@@ -38,6 +36,25 @@ func (c *Constructor) New(config *pangu.Config, logger log.Logger) (engine *db.E
 
 func (c *Constructor) NewTransaction(engine *db.Engine, logger log.Logger) *db.Transaction {
 	return db.NewTransaction(engine, logger)
+}
+
+func (c *Constructor) NewSynchronizer(engine *db.Engine, config *config.Sync, logger log.Logger) *db.Synchronizer {
+	return db.NewSynchronizer(engine, config, logger)
+}
+
+func (c *Constructor) Config(config *pangu.Config) (conf *Config, err error) {
+	wrapper := new(Wrapper)
+	if ge := config.Build().Get(wrapper); nil != ge {
+		err = ge
+	} else {
+		conf = wrapper.Db
+	}
+
+	return
+}
+
+func (c *Constructor) Sync(config *Config) *config.Sync {
+	return config.Sync
 }
 
 func (c *Constructor) setup(config *Config, engine *db.Engine, logger log.Logger) (err error) {
