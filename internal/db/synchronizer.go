@@ -28,7 +28,7 @@ func NewSynchronizer(engine *Engine, config *config.DB, logger log.Logger) *Sync
 
 func (s *Synchronizer) Sync(models ...any) (err error) {
 	fields := gox.Fields[any]{
-		field.New("models", s.tables(models...)),
+		field.New("tables", s.tables(models...)),
 		field.New("config", s.config.Sync),
 	}
 	s.logger.Info("同步数据库表开始", fields...)
