@@ -14,11 +14,11 @@ type Synchronizer struct {
 	gox.CannotCopy
 
 	engine *Engine
-	config *config.Sync
+	config *config.DB
 	logger log.Logger
 }
 
-func NewSynchronizer(engine *Engine, config *config.Sync, logger log.Logger) *Synchronizer {
+func NewSynchronizer(engine *Engine, config *config.DB, logger log.Logger) *Synchronizer {
 	return &Synchronizer{
 		engine: engine,
 		config: config,
@@ -47,8 +47,10 @@ func (s *Synchronizer) tables(models ...any) (tables []string) {
 		switch table := model.(type) {
 		case core.Commenter:
 			tables = append(tables, table.TableComment())
+		case core.NameMaker:
+			tables = append(tables, table.TableName())
 		default:
-			tables = append(tables, s.getType(table))
+			tables = append(tables, s.config.TableMapper().Obj2Table(s.getType(table)))
 		}
 	}
 
@@ -56,10 +58,10 @@ func (s *Synchronizer) tables(models ...any) (tables []string) {
 }
 
 func (s *Synchronizer) getType(table any) (typ string) {
-	if t := reflect.TypeOf(table); t.Kind() == reflect.Ptr {
-		typ = "*" + t.Elem().Name()
+	if of := reflect.TypeOf(table); of.Kind() == reflect.Ptr {
+		typ = of.Elem().Name()
 	} else {
-		typ = t.Name()
+		typ = of.Name()
 	}
 
 	return

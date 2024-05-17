@@ -22,7 +22,7 @@ type Constructor struct {
 	// 构造方法
 }
 
-func (c *Constructor) New(config *Config, logger log.Logger) (engine *db.Engine, err error) {
+func (c *Constructor) New(config *config.DB, logger log.Logger) (engine *db.Engine, err error) {
 	if created, ne := c.new(config, logger); nil != ne {
 		err = ne
 	} else if se := c.setup(config, created, logger); nil != se {
@@ -38,26 +38,22 @@ func (c *Constructor) NewTransaction(engine *db.Engine, logger log.Logger) *db.T
 	return db.NewTransaction(engine, logger)
 }
 
-func (c *Constructor) NewSynchronizer(engine *db.Engine, config *config.Sync, logger log.Logger) *db.Synchronizer {
+func (c *Constructor) NewSynchronizer(engine *db.Engine, config *config.DB, logger log.Logger) *db.Synchronizer {
 	return db.NewSynchronizer(engine, config, logger)
 }
 
-func (c *Constructor) Config(config *pangu.Config) (conf *Config, err error) {
+func (c *Constructor) DB(config *pangu.Config) (db *config.DB, err error) {
 	wrapper := new(Wrapper)
 	if ge := config.Build().Get(wrapper); nil != ge {
 		err = ge
 	} else {
-		conf = wrapper.Db
+		db = wrapper.Db
 	}
 
 	return
 }
 
-func (c *Constructor) Sync(config *Config) *config.Sync {
-	return config.Sync
-}
-
-func (c *Constructor) setup(config *Config, engine *db.Engine, logger log.Logger) (err error) {
+func (c *Constructor) setup(config *config.DB, engine *db.Engine, logger log.Logger) (err error) {
 	// 替换成统一的日志框架
 	engine.SetLogger(internal.NewXorm(logger))
 	// 调试模式下打开各种可调试的选项
@@ -71,12 +67,13 @@ func (c *Constructor) setup(config *Config, engine *db.Engine, logger log.Logger
 	engine.SetConnMaxLifetime(config.Connection.Lifetime)
 
 	// 设置名称转换（列名及表名）
+	mapper := config.TableMapper()
 	core.NewCacheMapper(core.GonicMapper{})
 	if "" != strings.TrimSpace(config.Prefix) {
-		core.NewPrefixMapper(core.GonicMapper{}, config.Prefix)
+		core.NewPrefixMapper(mapper, config.Prefix)
 	}
 	if "" != strings.TrimSpace(config.Suffix) {
-		core.NewSuffixMapper(core.GonicMapper{}, config.Suffix)
+		core.NewSuffixMapper(mapper, config.Suffix)
 	}
 
 	// 测试数据库连接成功
@@ -88,10 +85,10 @@ func (c *Constructor) setup(config *Config, engine *db.Engine, logger log.Logger
 	return
 }
 
-func (c *Constructor) new(config *Config, logger log.Logger) (engine *db.Engine, err error) {
+func (c *Constructor) new(config *config.DB, logger log.Logger) (engine *db.Engine, err error) {
 	if se := c.enableSSH(config, logger); nil != se {
 		err = se
-	} else if dsn, de := config.dsn(); nil != de {
+	} else if dsn, de := config.DSN(); nil != de {
 		err = de
 	} else {
 		engine = new(db.Engine)
@@ -101,8 +98,8 @@ func (c *Constructor) new(config *Config, logger log.Logger) (engine *db.Engine,
 	return
 }
 
-func (c *Constructor) enableSSH(conf *Config, logger log.Logger) (err error) {
-	if !conf.sshEnable() {
+func (c *Constructor) enableSSH(conf *config.DB, logger log.Logger) (err error) {
+	if !conf.SSHEnabled() {
 		return
 	}
 

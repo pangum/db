@@ -8,8 +8,7 @@ import (
 func init() {
 	ctor := new(plugin.Constructor)
 	pangu.New().Get().Dependency().Put(
-		ctor.Config,
-		ctor.Sync,
+		ctor.DB,
 		ctor.New,
 		ctor.NewTransaction,
 		ctor.NewSynchronizer,

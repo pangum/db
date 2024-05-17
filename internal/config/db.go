@@ -1,4 +1,4 @@
-package plugin
+package config
 
 import (
 	"fmt"
@@ -6,10 +6,11 @@ import (
 
 	"github.com/goexl/exception"
 	"github.com/goexl/gox/field"
-	"github.com/pangum/db/internal/config"
+	"github.com/pangum/db/internal/internal/constant"
+	"xorm.io/xorm/names"
 )
 
-type Config struct {
+type DB struct {
 	// 数据库类型
 	// nolint:lll
 	Type string `default:"sqlite3" json:"type,omitempty" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
@@ -26,8 +27,11 @@ type Config struct {
 	Protocol string `default:"tcp" json:"protocol,omitempty" yaml:"protocol" xml:"protocol" toml:"password" validate:"required,oneof=tcp udp"`
 
 	// 连接池配置
-	Connection config.Connection `json:"connection,omitempty" yaml:"connection" xml:"connection" toml:"connection"`
+	Connection Connection `json:"connection,omitempty" yaml:"connection" xml:"connection" toml:"connection"`
 
+	// 表名规则
+	// nolint: lll
+	Mapper string `default:"gonic" json:"mapper,omitempty" yaml:"mapper" xml:"mapper" toml:"mapper" validate:"required,oneof=snake same gonic"`
 	// 表名的前缀
 	Suffix string `json:"suffix,omitempty" yaml:"suffix" xml:"suffix" toml:"suffix"`
 	// 表名后缀
@@ -44,35 +48,50 @@ type Config struct {
 	Show bool `default:"false" json:"show,omitempty" yaml:"show" xml:"show" toml:"show"`
 
 	// SSH代理连接
-	SSH *config.Ssh `json:"ssh,omitempty" yaml:"ssh" xml:"ssh" toml:"ssh"`
+	SSH *Ssh `json:"ssh,omitempty" yaml:"ssh" xml:"ssh" toml:"ssh"`
 	// 同步
-	Sync *config.Sync `json:"sync,omitempty" yaml:"sync" xml:"sync" toml:"sync"`
+	Sync *Sync `json:"sync,omitempty" yaml:"sync" xml:"sync" toml:"sync"`
 }
 
-func (c *Config) dsn() (dsn string, err error) {
-	switch strings.ToLower(c.Type) {
+func (d *DB) TableMapper() (mapper names.Mapper) {
+	switch d.Mapper {
+	case constant.Gonic:
+		mapper = new(names.GonicMapper)
+	case constant.Snake:
+		mapper = new(names.SnakeMapper)
+	case constant.Same:
+		mapper = new(names.SameMapper)
+	default:
+		mapper = new(names.GonicMapper)
+	}
+
+	return
+}
+
+func (d *DB) DSN() (dsn string, err error) {
+	switch strings.ToLower(d.Type) {
 	case "mysql":
-		dsn = fmt.Sprintf("%s:%s@%s(%s)", c.Username, c.Password, c.Protocol, c.Addr)
-		if "" != strings.TrimSpace(c.Schema) {
-			dsn = fmt.Sprintf("%s/%s", dsn, strings.TrimSpace(c.Schema))
+		dsn = fmt.Sprintf("%s:%s@%s(%s)", d.Username, d.Password, d.Protocol, d.Addr)
+		if "" != strings.TrimSpace(d.Schema) {
+			dsn = fmt.Sprintf("%s/%s", dsn, strings.TrimSpace(d.Schema))
 		}
 	case "sqlite3":
-		dsn = c.Schema
+		dsn = d.Schema
 	default:
-		err = exception.New().Message("不支持的数据库类型").Field(field.New("type", c.Type)).Build()
+		err = exception.New().Message("不支持的数据库类型").Field(field.New("type", d.Type)).Build()
 	}
 	if nil != err {
 		return
 	}
 
 	// 增加参数
-	if "" != strings.TrimSpace(c.Parameters) {
-		dsn = fmt.Sprintf("%s?%s", dsn, strings.TrimSpace(c.Parameters))
+	if "" != strings.TrimSpace(d.Parameters) {
+		dsn = fmt.Sprintf("%s?%s", dsn, strings.TrimSpace(d.Parameters))
 	}
 
 	return
 }
 
-func (c *Config) sshEnable() bool {
-	return nil != c.SSH && c.SSH.Enable()
+func (d *DB) SSHEnabled() bool {
+	return nil != d.SSH && d.SSH.Enable()
 }
