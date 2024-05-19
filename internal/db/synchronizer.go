@@ -8,6 +8,7 @@ import (
 	"github.com/goexl/log"
 	"github.com/pangum/db/internal/config"
 	"github.com/pangum/db/internal/db/internal/core"
+	"xorm.io/xorm"
 )
 
 type Synchronizer struct {
@@ -27,15 +28,30 @@ func NewSynchronizer(engine *Engine, config *config.DB, logger log.Logger) *Sync
 }
 
 func (s *Synchronizer) Sync(models ...any) (err error) {
+	if !s.config.Sync.Enabled {
+		return
+	}
+
+	sync := s.config.Sync
+	options := new(xorm.SyncOptions)
+	if sync.Ignore.Indices {
+		options.IgnoreIndices = true
+	}
+	if sync.Ignore.Constrains {
+		options.IgnoreConstrains = true
+	}
+
 	fields := gox.Fields[any]{
 		field.New("tables", s.tables(models...)),
-		field.New("config", s.config.Sync),
+		field.New("sync", sync),
+		field.New("options", options),
 	}
 	s.logger.Info("同步数据库表开始", fields...)
-	if err = s.engine.Sync(models...); nil == err {
-		s.logger.Info("同步数据库表成功", fields...)
-	} else {
+	if _, se := s.engine.SyncWithOptions(*options, models...); nil == se {
+		err = se
 		s.logger.Error("同步数据库表失败", fields...)
+	} else {
+		s.logger.Info("同步数据库表成功", fields...)
 	}
 
 	return

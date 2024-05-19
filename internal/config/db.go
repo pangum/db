@@ -50,7 +50,7 @@ type DB struct {
 	// SSH代理连接
 	SSH *Ssh `json:"ssh,omitempty" yaml:"ssh" xml:"ssh" toml:"ssh"`
 	// 同步
-	Sync *Sync `json:"sync,omitempty" yaml:"sync" xml:"sync" toml:"sync"`
+	Sync Sync `json:"sync,omitempty" yaml:"sync" xml:"sync" toml:"sync"`
 }
 
 func (d *DB) TableMapper() (mapper names.Mapper) {
