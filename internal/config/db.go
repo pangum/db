@@ -14,11 +14,12 @@ import (
 type DB struct {
 	// 数据库类型
 	// nolint:lll
-	Type string `default:"sqlite3" json:"type,omitempty" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite3 mssql oracle psql"`
+	Type string `default:"sqlite3" json:"type,omitempty" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite sqlite3 mssql oracle psql"`
 
-	// 地址，填写服务器地址
-	// nolint:lll
-	Addr string `default:"127.0.0.1:3306" json:"addr,omitempty" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname_port"`
+	// 主机
+	Host string `json:"addr,omitempty" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname|ip"`
+	// 端口
+	Port int `default:"3306" json:"port,omitempty" yaml:"port" xml:"port" toml:"port" validate:"required,max=65535"`
 	// 授权，用户名
 	Username string `json:"username,omitempty" yaml:"username" xml:"username" toml:"username"`
 	// 授权，密码
@@ -77,7 +78,7 @@ func (d *DB) TableMapper() (mapper names.Mapper) {
 func (d *DB) DSN() (dsn string, err error) {
 	switch strings.ToLower(d.Type) {
 	case "mysql":
-		dsn = fmt.Sprintf("%s:%s@%s(%s)", d.Username, d.Password, d.Protocol, d.Addr)
+		dsn = fmt.Sprintf("%s:%s@%s(%s:%d)", d.Username, d.Password, d.Protocol, d.Host, d.Port)
 		if "" != strings.TrimSpace(d.Schema) {
 			dsn = fmt.Sprintf("%s/%s", dsn, strings.TrimSpace(d.Schema))
 		}

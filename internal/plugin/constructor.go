@@ -107,13 +107,13 @@ func (c *Constructor) enableSSH(conf *config.DB, logger log.Logger) (err error) 
 	keyfile := conf.SSH.Keyfile
 	auth := gox.Ift("" != password, ssh.Password(password), sshtunnel.PrivateKeyFile(keyfile))
 	host := fmt.Sprintf("%s@%s", conf.SSH.Username, conf.SSH.Addr)
-	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, conf.Addr, "65512"); nil != ne {
+	if tunnel, ne := sshtunnel.NewSSHTunnel(host, auth, conf.Host, "65512"); nil != ne {
 		err = ne
 	} else {
 		tunnel.Log = internal.NewSsh(logger)
 		go c.startTunnel(tunnel)
 		time.Sleep(100 * time.Millisecond)
-		conf.Addr = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
+		conf.Host = fmt.Sprintf("127.0.0.1:%d", tunnel.Local.Port)
 	}
 
 	return
