@@ -34,12 +34,10 @@ func (s *Synchronizer) Sync(models ...any) (err error) {
 
 	sync := s.config.Sync
 	options := new(xorm.SyncOptions)
-	if sync.Ignore.Indices {
-		options.IgnoreIndices = true
-	}
-	if sync.Ignore.Constrains {
-		options.IgnoreConstrains = true
-	}
+	options.IgnoreIndices = *sync.Ignore.Indices
+	options.IgnoreConstrains = *sync.Ignore.Constrains
+	options.IgnoreDropIndices = !sync.Drop.Indices
+	options.WarnIfDatabaseColumnMissed = sync.Warn.Missed.Column
 
 	fields := gox.Fields[any]{
 		field.New("tables", s.tables(models...)),
@@ -47,7 +45,7 @@ func (s *Synchronizer) Sync(models ...any) (err error) {
 		field.New("options", options),
 	}
 	s.logger.Info("同步数据库表开始", fields...)
-	if _, se := s.engine.SyncWithOptions(*options, models...); nil == se {
+	if _, se := s.engine.SyncWithOptions(*options, models...); nil != se {
 		err = se
 		s.logger.Error("同步数据库表失败", fields...)
 	} else {
