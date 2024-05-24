@@ -17,7 +17,7 @@ type DB struct {
 	Type string `default:"sqlite3" json:"type,omitempty" yaml:"type" xml:"type" toml:"type" validate:"required,oneof=mysql sqlite sqlite3 mssql oracle psql"`
 
 	// 主机
-	Host string `json:"addr,omitempty" yaml:"addr" xml:"addr" toml:"addr" validate:"required,hostname|ip"`
+	Host string `json:"host,omitempty" yaml:"host" xml:"host" toml:"host" validate:"required,hostname|ip"`
 	// 端口
 	Port int `default:"3306" json:"port,omitempty" yaml:"port" xml:"port" toml:"port" validate:"required,max=65535"`
 	// 授权，用户名
