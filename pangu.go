@@ -7,10 +7,10 @@ import (
 
 func init() {
 	ctor := new(plugin.Constructor)
-	pangu.New().Get().Dependency().Put(
+	pangu.New().Get().Dependency().Puts(
 		ctor.DB,
 		ctor.New,
 		ctor.NewTransaction,
 		ctor.NewSynchronizer,
-	).Build().Build().Apply()
+	).Build().Apply()
 }
