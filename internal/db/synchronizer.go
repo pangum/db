@@ -34,8 +34,8 @@ func (s *Synchronizer) Sync(models ...any) (err error) {
 
 	sync := s.config.Sync
 	options := new(xorm.SyncOptions)
-	options.IgnoreIndices = *sync.Ignore.Indices
-	options.IgnoreConstrains = *sync.Ignore.Constrains
+	options.IgnoreIndices = sync.Ignore.Indices
+	options.IgnoreConstrains = sync.Ignore.Constrains
 	options.IgnoreDropIndices = !sync.Drop.Indices
 	options.WarnIfDatabaseColumnMissed = sync.Warn.Missed.Column
 
