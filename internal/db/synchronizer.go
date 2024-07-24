@@ -45,11 +45,11 @@ func (s *Synchronizer) Sync(models ...any) (err error) {
 		field.New("options", options),
 	}
 	s.logger.Info("同步数据库表开始", fields...)
-	if _, se := s.engine.SyncWithOptions(*options, models...); nil != se {
+	if result, se := s.engine.SyncWithOptions(*options, models...); nil != se {
 		err = se
 		s.logger.Error("同步数据库表失败", fields...)
 	} else {
-		s.logger.Info("同步数据库表成功", fields...)
+		s.logger.Info("同步数据库表成功", fields.Add(field.New("result", result))...)
 	}
 
 	return
