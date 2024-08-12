@@ -8,7 +8,7 @@ require (
 	github.com/goexl/gox v0.5.2
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v0.5.1
-	golang.org/x/crypto v0.25.0
+	golang.org/x/crypto v0.26.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
 )
@@ -45,8 +45,8 @@ require (
 	github.com/zs5460/art v0.3.0 // indirect
 	go.uber.org/dig v1.17.1 // indirect
 	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	xorm.io/builder v0.3.13 // indirect
 )
