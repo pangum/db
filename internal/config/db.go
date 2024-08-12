@@ -48,9 +48,9 @@ type DB struct {
 	// nolint: lll
 	Parameters internal.Parameters `default:"{'parseTime': true, 'loc': 'Local'}" json:"parameters,omitempty" yaml:"parameters" xml:"parameters" toml:"parameters"`
 	// 是否连接时测试数据库连接是否完好
-	Ping bool `default:"true" json:"ping,omitempty" yaml:"ping" xml:"ping" toml:"ping"`
+	Ping *bool `default:"true" json:"ping,omitempty" yaml:"ping" xml:"ping" toml:"ping"`
 	// 是否显示执行语句
-	Show bool `default:"false" json:"show,omitempty" yaml:"show" xml:"show" toml:"show"`
+	Verbose bool `json:"verbose,omitempty" yaml:"verbose" xml:"verbose" toml:"verbose"`
 
 	// 代理连接
 	SSH *Ssh `json:"ssh,omitempty" yaml:"ssh" xml:"ssh" toml:"ssh"`

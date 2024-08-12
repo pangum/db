@@ -57,7 +57,7 @@ func (c *Constructor) setup(config *config.DB, engine *db.Engine, logger log.Log
 	// 替换成统一的日志框架
 	engine.SetLogger(internal.NewXorm(logger))
 	// 调试模式下打开各种可调试的选项
-	if config.Show {
+	if config.Verbose {
 		engine.ShowSQL()
 	}
 
@@ -77,7 +77,7 @@ func (c *Constructor) setup(config *config.DB, engine *db.Engine, logger log.Log
 	}
 
 	// 测试数据库连接成功
-	if config.Ping {
+	if *config.Ping {
 		logger.Info("开始测试数据库连接", field.New("config", config))
 		err = engine.Ping()
 	}
