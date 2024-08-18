@@ -7,5 +7,6 @@ import (
 
 type Engine struct {
 	*xorm.Engine
-	gox.CannotCopy
+
+	_ gox.Pointerized
 }

@@ -8,5 +8,6 @@ import (
 // Session 事务
 type Session struct {
 	*xorm.Session
-	gox.CannotCopy
+
+	_ gox.Pointerized
 }

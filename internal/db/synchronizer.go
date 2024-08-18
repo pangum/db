@@ -12,11 +12,11 @@ import (
 )
 
 type Synchronizer struct {
-	gox.CannotCopy
-
 	engine *Engine
 	config *config.DB
 	logger log.Logger
+
+	_ gox.Pointerized
 }
 
 func NewSynchronizer(engine *Engine, config *config.DB, logger log.Logger) *Synchronizer {

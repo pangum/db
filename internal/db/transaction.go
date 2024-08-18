@@ -10,10 +10,10 @@ import (
 )
 
 type Transaction struct {
-	gox.CannotCopy
-
 	engine *Engine
 	logger log.Logger
+
+	_ gox.Pointerized
 }
 
 func NewTransaction(engine *Engine, logger log.Logger) *Transaction {
