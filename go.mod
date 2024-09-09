@@ -5,9 +5,9 @@ go 1.23
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/goexl/exception v0.0.1
-	github.com/goexl/gox v0.6.2
+	github.com/goexl/gox v0.6.8
 	github.com/goexl/log v0.0.7
-	github.com/pangum/pangu v0.5.6
+	github.com/pangum/pangu v1.4.1
 	golang.org/x/crypto v0.26.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
@@ -35,11 +35,10 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/rs/xid v1.5.0 // indirect
+	github.com/rs/xid v1.6.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/storezhang/dig v0.0.1 // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
 	github.com/urfave/cli/v2 v2.27.4 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
