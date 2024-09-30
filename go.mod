@@ -7,7 +7,7 @@ require (
 	github.com/goexl/exception v0.0.1
 	github.com/goexl/gox v1.8.9
 	github.com/goexl/log v0.0.7
-	github.com/pangum/pangu v1.4.5
+	github.com/pangum/pangu v1.4.6
 	golang.org/x/crypto v0.27.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
@@ -27,7 +27,7 @@ require (
 	github.com/goexl/gfx v0.2.3 // indirect
 	github.com/goexl/mengpo v0.2.6 // indirect
 	github.com/goexl/structer v0.1.8 // indirect
-	github.com/goexl/xiren v0.0.7 // indirect
+	github.com/goexl/xiren v0.0.8 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
