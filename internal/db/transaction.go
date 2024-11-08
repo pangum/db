@@ -23,20 +23,20 @@ func NewTransaction(engine *Engine, logger log.Logger) *Transaction {
 	}
 }
 
-func (t *Transaction) Do(fun Function, fields ...gox.Field[any]) (err error) {
-	return t.do(func(tx *Session) error {
+func (t *Transaction) Do(fun Function, fields ...gox.Field[any]) (int64, error) {
+	return t.do(func(tx *Session) (int64, error) {
 		return fun(tx)
 	}, fields...)
 }
 
-func (t *Transaction) do(fun func(tx *Session) error, fields ...gox.Field[any]) (err error) {
+func (t *Transaction) do(fun Function, fields ...gox.Field[any]) (affected int64, err error) {
 	session := t.engine.NewSession()
 	if err = t.begin(session, fields...); nil != err {
 		return
 	}
 	defer t.close(session, fields...)
 
-	if err = fun(&Session{Session: session}); nil != err {
+	if affected, err = fun(&Session{Session: session}); nil != err {
 		t.rollback(session, fields...)
 	} else {
 		t.commit(session, fields...)

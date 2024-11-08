@@ -1,3 +1,3 @@
 package db
 
-type Function func(session *Session) error
+type Function func(session *Session) (int64, error)
