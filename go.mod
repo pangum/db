@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/goexl/exception v0.0.1
-	github.com/goexl/gox v1.8.9
+	github.com/goexl/gox v1.9.0
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v1.5.3
 	golang.org/x/crypto v0.28.0
