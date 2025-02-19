@@ -66,15 +66,16 @@ func (c *Constructor) setup(config *config.DB, engine *db.Engine, logger log.Log
 	engine.SetMaxIdleConns(config.Connection.Idle)
 	engine.SetConnMaxLifetime(config.Connection.Lifetime)
 
-	// 设置名称转换（列名及表名）
+	// 设置名称转换
 	mapper := config.TableMapper()
 	core.NewCacheMapper(core.GonicMapper{})
 	if "" != strings.TrimSpace(config.Prefix) {
-		core.NewPrefixMapper(mapper, config.Prefix)
+		mapper = core.NewPrefixMapper(mapper, config.Prefix)
 	}
 	if "" != strings.TrimSpace(config.Suffix) {
-		core.NewSuffixMapper(mapper, config.Suffix)
+		mapper = core.NewSuffixMapper(mapper, config.Suffix)
 	}
+	engine.SetTableMapper(mapper) // !必须配置名称转移
 
 	// 测试数据库连接成功
 	if *config.Ping {
