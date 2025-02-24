@@ -1,14 +1,13 @@
 module github.com/pangum/db
 
 go 1.23
-
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/goexl/exception v0.0.3
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.0.7
 	github.com/pangum/pangu v1.5.7
-	golang.org/x/crypto v0.33.0
+	golang.org/x/crypto v0.35.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
 )
