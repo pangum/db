@@ -1,12 +1,14 @@
 module github.com/pangum/db
 
 go 1.23
+toolchain go1.24.1
+
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
 	github.com/goexl/exception v0.0.3
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.0.7
-	github.com/pangum/pangu v1.5.7
+	github.com/pangum/pangu v1.5.8
 	golang.org/x/crypto v0.36.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
@@ -41,11 +43,11 @@ require (
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
-	github.com/urfave/cli/v2 v2.27.5 // indirect
+	github.com/urfave/cli/v2 v2.27.6 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/zs5460/art v0.3.0 // indirect
-	go.uber.org/dig v1.18.0 // indirect
-	golang.org/x/net v0.35.0 // indirect
+	go.uber.org/dig v1.18.1 // indirect
+	golang.org/x/net v0.37.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	xorm.io/builder v0.3.13 // indirect
