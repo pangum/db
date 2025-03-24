@@ -8,7 +8,7 @@ require (
 	github.com/goexl/exception v0.0.3
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.0.9
-	github.com/pangum/pangu v1.5.8
+	github.com/pangum/pangu v1.5.9
 	golang.org/x/crypto v0.36.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.3.9
