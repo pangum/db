@@ -1,11 +1,12 @@
 module github.com/pangum/db
 
-go 1.23
+go 1.24
+
 toolchain go1.24.1
 
 require (
 	github.com/elliotchance/sshtunnel v1.6.1
-	github.com/goexl/exception v0.0.3
+	github.com/goexl/exception v0.0.4
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.0.9
 	github.com/pangum/pangu v1.6.0
