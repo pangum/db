@@ -8,7 +8,7 @@ require (
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.1.0
 	github.com/pangum/pangu v1.6.0
-	golang.org/x/crypto v0.53.0
+	golang.org/x/crypto v0.54.0
 	xorm.io/core v0.7.3
 	xorm.io/xorm v1.4.1
 )
@@ -43,8 +43,8 @@ require (
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	github.com/zs5460/art v0.3.0 // indirect
 	go.uber.org/dig v1.18.1 // indirect
-	golang.org/x/net v0.55.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/net v0.56.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/text v0.40.0 // indirect
 	xorm.io/builder v0.3.13 // indirect
 )
